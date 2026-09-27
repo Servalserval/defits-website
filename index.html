@@ -30,30 +30,147 @@
   </script>
 
   <script>
-    // 真人瀏覽器跳轉；搜尋引擎爬蟲留在本頁以便收錄上方描述
+    // 真人瀏覽器播放 logo 動畫後跳轉；搜尋引擎爬蟲留在本頁以便收錄上方描述
     (function () {
       var bot = /bot|crawl|spider|slurp|bing|google|baidu|yandex|duckduck|facebookexternalhit|twitterbot|linkedinbot|embedly|preview|lighthouse/i;
       if (!bot.test(navigator.userAgent)) {
-        location.replace("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+        document.documentElement.classList.add("play");
+        setTimeout(function () {
+          location.replace("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+        }, 10000);
       }
     })();
   </script>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+
   <style>
-    body { margin: 0; min-height: 100vh; display: grid; place-items: center;
-           font-family: system-ui, -apple-system, "PingFang TC", "Noto Sans TC", sans-serif;
-           background: #0b0d12; color: #e6e8ee; padding: 16px; box-sizing: border-box; }
-    main { max-width: 640px; }
-    img { display: block; border-radius: 12px; margin-bottom: 16px; }
-    h1 { margin: 0 0 12px; font-size: 2rem; }
-    p { line-height: 1.7; color: #b8bcc8; }
+    :root {
+      --bg: #ffffff;
+      --ink: #1b1d1c;
+      --muted: #5f6b66;
+      --teal: #0ab18f;
+      --sage-hi: #aad6c6;
+      --sage-lo: #80b7a0;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--ink);
+      font-family: "Montserrat", system-ui, -apple-system, "PingFang TC", "Noto Sans TC", sans-serif;
+      display: grid; place-items: center; padding: 16px; overflow: hidden;
+    }
+    main { display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 640px; }
+
+    .mark { width: min(44vw, 220px); height: auto; overflow: visible; }
+    .mark path { transform-box: fill-box; transform-origin: 50% 50%; }
+
+    .word {
+      margin: 18px 0 0; font-weight: 600; letter-spacing: 0.02em;
+      font-size: clamp(2.6rem, 11vw, 4.2rem); line-height: 1;
+    }
+    .word span { display: inline-block; }
+
+    .desc {
+      margin: 22px 0 0; max-width: 34em; line-height: 1.75;
+      font-size: clamp(0.9rem, 3.6vw, 1rem); color: var(--muted);
+      font-family: system-ui, -apple-system, "PingFang TC", "Noto Sans TC", sans-serif;
+    }
+
+    .bar { display: none; }
+
+    /* ---------- 動畫（只在真人瀏覽器啟用，爬蟲看到靜態完成畫面） ---------- */
+    .play .bar {
+      display: block; position: fixed; left: 0; bottom: 0; height: 3px; width: 100%;
+      background: var(--teal); transform-origin: 0 50%; transform: scaleX(0);
+      animation: bar 10s linear forwards; opacity: .55;
+    }
+
+    /* 1. 下方箭頭：先描邊再填色 */
+    .play .chev-b {
+      fill-opacity: 0; stroke: var(--teal); stroke-width: 1.1;
+      stroke-dasharray: 1; stroke-dashoffset: 1;
+      animation: draw 1.3s cubic-bezier(.6,0,.3,1) .4s forwards, fill .6s ease 1.4s forwards;
+    }
+    /* 2. 中間斜槓：沿著斜線滑入 */
+    .play .band {
+      opacity: 0; transform: translate(-22px, -26px);
+      animation: band .8s cubic-bezier(.2,.8,.2,1) 1.7s forwards;
+    }
+    /* 3. 上方箭頭：從上方落下 */
+    .play .chev-t {
+      opacity: 0; transform: translateY(-60%);
+      animation: drop .9s cubic-bezier(.3,1.5,.5,1) 2.4s forwards;
+    }
+    /* 4. 整體上揚脈動 + 光澤掃過 */
+    .play .mark-g { animation: lift 1.2s ease-in-out 3.4s both; transform-box: fill-box; transform-origin: 50% 100%; }
+    .play .glint { animation: glint 1.4s ease-in-out 3.7s both; }
+    /* 5. 文字逐字浮現 */
+    .play .word span { opacity: 0; transform: translateY(.5em); filter: blur(6px);
+      animation: letter .7s cubic-bezier(.2,.8,.2,1) forwards; }
+    .play .word span:nth-child(1) { animation-delay: 4.4s; }
+    .play .word span:nth-child(2) { animation-delay: 4.52s; }
+    .play .word span:nth-child(3) { animation-delay: 4.64s; }
+    .play .word span:nth-child(4) { animation-delay: 4.76s; }
+    .play .word span:nth-child(5) { animation-delay: 4.88s; }
+    .play .word span:nth-child(6) { animation-delay: 5.0s; }
+    /* 6. 描述文字 */
+    .play .desc { opacity: 0; animation: fadeup 1s ease 5.9s forwards; }
+    /* 7. 結尾：箭頭向上衝出、整體淡出 */
+    .play main { animation: out .9s cubic-bezier(.6,0,.8,.4) 9.05s forwards; }
+    .play .mark { animation: launch 1s cubic-bezier(.6,0,.9,.5) 8.9s forwards; }
+
+    @keyframes draw   { to { stroke-dashoffset: 0; } }
+    @keyframes fill   { to { fill-opacity: 1; stroke-width: 0; } }
+    @keyframes band   { to { opacity: 1; transform: none; } }
+    @keyframes drop   { to { opacity: 1; transform: none; } }
+    @keyframes lift   { 0%,100% { transform: none; } 45% { transform: translateY(-4%) scale(1.04); } }
+    @keyframes glint  { from { transform: translateX(-60px); } to { transform: translateX(160px); } }
+    @keyframes letter { to { opacity: 1; transform: none; filter: blur(0); } }
+    @keyframes fadeup { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    @keyframes launch { 0% { transform: none; } 25% { transform: translateY(6%); } 100% { transform: translateY(-140%); } }
+    @keyframes out    { to { opacity: 0; transform: scale(.97); } }
+    @keyframes bar    { to { transform: scaleX(1); } }
+
+    @media (prefers-reduced-motion: reduce) {
+      .play *, .play main { animation-duration: .01s !important; animation-delay: 0s !important; }
+      .play .bar { animation: bar 10s linear forwards !important; }
+    }
   </style>
 </head>
 <body>
   <main>
-    <img src="/logo.png" alt="DeFITs" width="160" height="160">
-    <h1>DeFITs</h1>
-    <p>DeFITs是一家交易科技公司，旨在為我們的客戶提供全方位的加密投資服務，讓他們無痛參與區塊鏈生態的金融創新，同時也是整個系統的流動性提供者。</p>
+    <svg class="mark" viewBox="50 34 100 96" role="img" aria-label="DeFITs logo">
+      <defs>
+        <linearGradient id="sage" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#aad6c6"/>
+          <stop offset="1" stop-color="#80b7a0"/>
+        </linearGradient>
+        <linearGradient id="shine" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+          <stop offset=".5" stop-color="#fff" stop-opacity=".75"/>
+          <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+        </linearGradient>
+        <clipPath id="shape">
+          <path d="M55 93 100 39 145 93H129L100 58 71 93Z"/>
+          <path d="M55 126 100 72 145 126H129L100 91 71 126Z"/>
+          <path d="M79 100H95L117 126H101Z"/>
+        </clipPath>
+      </defs>
+      <g class="mark-g">
+        <path class="chev-t" fill="url(#sage)" d="M55 93 100 39 145 93H129L100 58 71 93Z"/>
+        <path class="chev-b" fill="#0ab18f" pathLength="1" d="M55 126 100 72 145 126H129L100 91 71 126Z"/>
+        <path class="band"  fill="#0ab18f" d="M79 100H95L117 126H101Z"/>
+        <g clip-path="url(#shape)">
+          <rect class="glint" x="30" y="30" width="40" height="110" fill="url(#shine)" style="transform: translateX(-60px)"/>
+        </g>
+      </g>
+    </svg>
+    <h1 class="word" aria-label="DeFITs"><span>D</span><span>e</span><span>F</span><span>I</span><span>T</span><span>s</span></h1>
+    <p class="desc">DeFITs是一家交易科技公司，旨在為我們的客戶提供全方位的加密投資服務，讓他們無痛參與區塊鏈生態的金融創新，同時也是整個系統的流動性提供者。</p>
   </main>
+  <div class="bar"></div>
 </body>
 </html>
