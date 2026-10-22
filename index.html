@@ -80,6 +80,14 @@
       font-family: system-ui, -apple-system, "PingFang TC", "Noto Sans TC", sans-serif;
     }
 
+    .contact {
+      position: fixed; left: 0; right: 0; bottom: max(28px, env(safe-area-inset-bottom));
+      margin: 0; padding: 0 16px; text-align: center;
+      font-size: clamp(0.85rem, 3.4vw, 0.95rem); color: var(--muted); letter-spacing: 0.02em;
+      font-family: system-ui, -apple-system, "PingFang TC", "Noto Sans TC", sans-serif;
+    }
+    .contact a { color: var(--teal); text-decoration: none; font-weight: 600; }
+
     .bar { display: none; }
 
     /* ---------- 動畫（只在真人瀏覽器啟用，爬蟲看到靜態完成畫面） ---------- */
@@ -119,7 +127,9 @@
     .play .word span:nth-child(6) { animation-delay: 5.0s; }
     /* 6. 描述文字 */
     .play .desc { opacity: 0; animation: fadeup 1s ease 5.9s forwards; }
-    /* 7. 結尾：箭頭向上衝出、整體淡出 */
+    /* 7. 聯絡信箱：在畫面底部正中間浮現 */
+    .play .contact { opacity: 0; animation: fadeup 1s ease 7s forwards, out .9s cubic-bezier(.6,0,.8,.4) 9.05s forwards; }
+    /* 8. 結尾：箭頭向上衝出、整體淡出 */
     .play main { animation: out .9s cubic-bezier(.6,0,.8,.4) 9.05s forwards; }
     .play .mark { animation: launch 1s cubic-bezier(.6,0,.9,.5) 8.9s forwards; }
 
@@ -138,6 +148,7 @@
     @media (prefers-reduced-motion: reduce) {
       .play *, .play main { animation-duration: .01s !important; animation-delay: 0s !important; }
       .play .bar { animation: bar 10s linear forwards !important; }
+      .play main, .play .mark, .play .contact { animation: none !important; opacity: 1; }
     }
   </style>
 </head>
@@ -172,6 +183,7 @@
     <h1 class="word" aria-label="DeFITs"><span>D</span><span>e</span><span>F</span><span>I</span><span>T</span><span>s</span></h1>
     <p class="desc">DeFITs是一家交易科技公司，旨在為我們的客戶提供全方位的加密投資服務。從不放棄客戶，從不讓客戶失望，從不背叛拋棄客戶。從不捨得讓客戶哭泣，永遠都不和客戶說再見，永遠不因謊言而傷害了客戶。</p>
   </main>
+  <p class="contact">聯絡信箱：<a href="mailto:contact@defits.capital">contact@defits.capital</a></p>
   <div class="bar"></div>
 </body>
 </html>
