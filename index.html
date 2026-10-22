@@ -38,7 +38,7 @@
         document.documentElement.classList.add("play");
         setTimeout(function () {
           location.replace("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
-        }, 12000);
+        }, 10000);
       }
     })();
   </script>
@@ -94,7 +94,7 @@
     .play .bar {
       display: block; position: fixed; left: 0; bottom: 0; height: 3px; width: 100%;
       background: var(--teal); transform-origin: 0 50%; transform: scaleX(0);
-      animation: bar 12s linear forwards; opacity: .55;
+      animation: bar 10s linear forwards; opacity: .55;
     }
 
     /* 1. 下方箭頭：先描邊再填色 */
@@ -128,10 +128,10 @@
     /* 6. 描述文字 */
     .play .desc { opacity: 0; animation: fadeup 1s ease 5.9s forwards; }
     /* 7. 聯絡信箱：在畫面底部正中間浮現 */
-    .play .contact { opacity: 0; animation: fadeup 1s ease 7s forwards, out .9s cubic-bezier(.6,0,.8,.4) 11.05s forwards; }
+    .play .contact { opacity: 0; animation: fadeup 1s ease 7s forwards, out .9s cubic-bezier(.6,0,.8,.4) 9.05s forwards; }
     /* 8. 結尾：箭頭向上衝出、整體淡出 */
-    .play main { animation: out .9s cubic-bezier(.6,0,.8,.4) 11.05s forwards; }
-    .play .mark { animation: launch 1s cubic-bezier(.6,0,.9,.5) 10.9s forwards; }
+    .play main { animation: out .9s cubic-bezier(.6,0,.8,.4) 9.05s forwards; }
+    .play .mark { animation: launch 1s cubic-bezier(.6,0,.9,.5) 8.9s forwards; }
 
     @keyframes draw   { to { stroke-dashoffset: 0; } }
     @keyframes fill   { to { fill-opacity: 1; stroke-width: 0; } }
@@ -147,7 +147,7 @@
 
     @media (prefers-reduced-motion: reduce) {
       .play *, .play main { animation-duration: .01s !important; animation-delay: 0s !important; }
-      .play .bar { animation: bar 12s linear forwards !important; }
+      .play .bar { animation: bar 10s linear forwards !important; }
       .play main, .play .mark, .play .contact { animation: none !important; opacity: 1; }
     }
   </style>
